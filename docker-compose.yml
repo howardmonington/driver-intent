@@ -4,6 +4,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    runtime: nvidia
     shm_size: '2g'
     ports:
       - 8888:8888
