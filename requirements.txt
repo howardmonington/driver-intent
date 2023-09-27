@@ -1,5 +1,6 @@
 accelerate
 argparse
+bitsandbytes
 datasets
 deepspeed
 evaluate
@@ -10,9 +11,11 @@ mpi4py
 nltk
 numpy
 pandas
+peft
 pytorch_lightning
 scikit-learn
 sentencepiece
 tensorboard
 torch
 transformers[torch]
+wandb
