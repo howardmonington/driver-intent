@@ -10,6 +10,8 @@ from transformers import BertForSequenceClassification, Trainer, TrainingArgumen
 from sklearn.metrics import accuracy_score
 from sklearn.preprocessing import LabelEncoder
 import wandb 
+from transformers import EarlyStoppingCallback, IntervalStrategy
+
 
 
 parser = argparse.ArgumentParser(description='Fine-tune BERT model')
@@ -32,11 +34,14 @@ def compute_metrics(p):
     wandb.log({"accuracy": acc})  
     return {"accuracy": acc}
 
+early_stopping_callback = EarlyStoppingCallback(early_stopping_patience=2)
+
+
 training_args = TrainingArguments(
     per_device_train_batch_size=8,
     per_device_eval_batch_size=8,
     output_dir='/results',
-    num_train_epochs=1,
+    num_train_epochs=10,
     evaluation_strategy="steps",
     save_steps=10,
     save_total_limit=2,
@@ -46,6 +51,8 @@ training_args = TrainingArguments(
     logging_steps=10,
     load_best_model_at_end=True,
     report_to='wandb', 
+    learning_rate=3e-5,
+    metric_for_best_model="accuracy", 
 )
 
 trainer = Trainer(
@@ -53,7 +60,8 @@ trainer = Trainer(
     args=training_args,
     train_dataset=dataset_dict["train"],
     eval_dataset=dataset_dict["test"],
-    compute_metrics=compute_metrics, 
+    compute_metrics=compute_metrics,
+    callbacks=[early_stopping_callback],
 )
 
 trainer.train()
