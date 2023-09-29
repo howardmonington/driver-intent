@@ -19,3 +19,4 @@ tensorboard
 torch
 transformers[torch]
 wandb
+gradio
