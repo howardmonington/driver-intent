@@ -1,27 +1,26 @@
-import pandas as pd
-import torch
 import argparse
-from transformers import BertTokenizer, BertForSequenceClassification
-from datasets import DatasetDict, Dataset, load_from_disk
-from sklearn.model_selection import train_test_split
-from transformers import BertForSequenceClassification, Trainer, TrainingArguments
-from transformers import pipeline, AutoTokenizer, AutoModelForSequenceClassification, AutoModelForSeq2SeqLM, GenerationConfig
+import torch
+import wandb
 
-from sklearn.metrics import accuracy_score
-
-from sklearn.preprocessing import LabelEncoder
-from transformers import BitsAndBytesConfig
 import bitsandbytes as bnb
-from accelerate import Accelerator
-from peft import prepare_model_for_kbit_training, LoraConfig, TaskType, get_peft_model
-from transformers import TrainingArguments, AutoConfig, \
-    AutoModelForSequenceClassification, AutoTokenizer, BitsAndBytesConfig, DataCollatorWithPadding
+from sklearn.metrics import accuracy_score
+from sklearn.preprocessing import LabelEncoder
+from datasets import load_from_disk
+
 from peft import (
-    PeftConfig,
-    PeftModel,
+    prepare_model_for_kbit_training,
+    LoraConfig,
+    TaskType,
+    get_peft_model
 )
-import wandb 
-from transformers import EarlyStoppingCallback, IntervalStrategy
+
+from transformers import (
+    Trainer,
+    TrainingArguments,
+    AutoModelForSequenceClassification,
+    BitsAndBytesConfig,
+    EarlyStoppingCallback
+)
 
 
 parser = argparse.ArgumentParser(description='Fine-tune BERT model with QLoRA')

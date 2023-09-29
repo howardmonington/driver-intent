@@ -1,17 +1,15 @@
-# example run command: python3 fine-tune-bert.py --model "bert-base-uncased"
-
 import argparse
-import pandas as pd
-import torch
-from transformers import BertTokenizer, BertForSequenceClassification
-from datasets import DatasetDict, Dataset, load_from_disk
-from sklearn.model_selection import train_test_split
-from transformers import BertForSequenceClassification, Trainer, TrainingArguments
-from sklearn.metrics import accuracy_score
-from sklearn.preprocessing import LabelEncoder
-import wandb 
-from transformers import EarlyStoppingCallback, IntervalStrategy
 
+import wandb 
+from sklearn.metrics import accuracy_score
+
+from datasets import load_from_disk
+from transformers import (
+    BertForSequenceClassification, 
+    Trainer, 
+    TrainingArguments,
+    EarlyStoppingCallback
+)
 
 
 parser = argparse.ArgumentParser(description='Fine-tune BERT model')
