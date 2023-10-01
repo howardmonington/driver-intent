@@ -80,6 +80,11 @@ config = LoraConfig(
     bias="all",
     task_type=TaskType.SEQ_CLS,
     target_modules = modules,
+    # when we wrap our base model with PeftModel and pass the configuration, we obtain a new model in which only the LoRA 
+    # parameters are trainable, while the pre-trained parameters and the randomly initialized classifier parameters are kept
+    # frozen. However, we do want to train the classifier parameters. By specifying the modules_to_save argument, we ensure 
+    # that the classifier parameters are also trainable, and they will be serialized alongside the LoRA trainable parameters 
+    # when we use utility functions like save_pretrained() and push_to_hub().
     modules_to_save=["decode_head"],
 )
 
