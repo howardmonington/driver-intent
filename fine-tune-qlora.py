@@ -101,11 +101,11 @@ training_args = TrainingArguments(
     per_device_train_batch_size=8,
     per_device_eval_batch_size=8,
     gradient_accumulation_steps=8,
-    output_dir='/results',
+    output_dir='../qlora-models',
     num_train_epochs=8,
     evaluation_strategy="steps",
     save_steps=10,
-    save_total_limit=2,
+    save_total_limit=5,
     remove_unused_columns=False,
     run_name='run_name',
     logging_dir='/logs',
@@ -127,3 +127,6 @@ trainer = Trainer(
 )
 
 trainer.train()
+
+model_path = "../qlora-models/best_model"
+model.save_pretrained(model_path)

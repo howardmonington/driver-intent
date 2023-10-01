@@ -38,11 +38,11 @@ early_stopping_callback = EarlyStoppingCallback(early_stopping_patience=2)
 training_args = TrainingArguments(
     per_device_train_batch_size=8,
     per_device_eval_batch_size=8,
-    output_dir='/results',
+    output_dir='../bert-models',
     num_train_epochs=10,
     evaluation_strategy="steps",
     save_steps=10,
-    save_total_limit=2,
+    save_total_limit=4,
     remove_unused_columns=False,
     run_name='run_name',
     logging_dir='/logs',
@@ -63,3 +63,6 @@ trainer = Trainer(
 )
 
 trainer.train()
+
+model_path = "../bert-models/best_model"
+model.save_pretrained(model_path)

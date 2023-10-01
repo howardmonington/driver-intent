@@ -1,6 +1,7 @@
 import pandas as pd
 import torch
 import joblib
+import os
 from transformers import BertTokenizer, BertForSequenceClassification
 from datasets import DatasetDict, Dataset
 from sklearn.model_selection import train_test_split
@@ -15,15 +16,17 @@ df = pd.read_csv(r'../driver-intent-classification-dataset.csv', encoding='ISO-8
 # and I want to validate that this works on non-critical functions first
 df = df[df['Intent'] != 'turn on high beams']
 
-train_df, val_df = train_test_split(df, stratify=df['Intent'], test_size=0.2, random_state=42)
-
-# encode only on the training dataset to avoid target leakage
 le = LabelEncoder()
-train_df['labels'] = le.fit_transform(train_df['Intent'])
+df['labels'] = le.fit_transform(df['Intent'])
 
-# Save the LabelEncoder to a file
-label_encoder_file = "../label_encoder.joblib"
-joblib.dump(le, label_encoder_file)
+label_encoder_dir = '../label-encoder'
+os.makedirs(label_encoder_dir, exist_ok=True) 
+
+
+label_encoder_file_path = os.path.join(label_encoder_dir, 'label_encoder.joblib')
+joblib.dump(le, label_encoder_file_path)
+
+train_df, val_df = train_test_split(df, stratify=df['labels'], test_size=0.2, random_state=42)
 
 tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
 
