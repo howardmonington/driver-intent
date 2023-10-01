@@ -79,7 +79,8 @@ config = LoraConfig(
     lora_dropout=0.1,
     bias="all",
     task_type=TaskType.SEQ_CLS,
-    target_modules = modules
+    target_modules = modules,
+    modules_to_save=["decode_head"],
 )
 
 peft_config = LoraConfig(task_type=TaskType.SEQ_CLS, inference_mode=False, r=12, lora_alpha=32, lora_dropout=0.1)
@@ -102,7 +103,7 @@ training_args = TrainingArguments(
     per_device_eval_batch_size=8,
     gradient_accumulation_steps=8,
     output_dir='../qlora-models',
-    num_train_epochs=8,
+    num_train_epochs=8, # 8
     evaluation_strategy="steps",
     save_steps=10,
     save_total_limit=5,
